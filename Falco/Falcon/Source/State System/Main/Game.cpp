@@ -1,6 +1,6 @@
 #include "../../stdafx.h"
 #include "Game.h"
-#include "../../../Vector2.h"
+#include "../../Math/Vector2.h"
 
 
 CGame::CGame(float _fScreenWidth, float _fScreenHeight, bool _bIsWindowed, HWND _hwnd)
