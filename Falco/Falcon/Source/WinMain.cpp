@@ -164,7 +164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	CGame* m_pGame = new CGame( g_nWINDOW_WIDTH, g_nWINDOW_HEIGHT, g_bIS_WINDOWED, hWnd );
+	CGame* m_pGame = new CGame((float) g_nWINDOW_WIDTH, (float)g_nWINDOW_HEIGHT, g_bIS_WINDOWED, hWnd );
 		
 	
 
