@@ -14,11 +14,17 @@
     <ClCompile Include="Source\State System\Main\Game.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\State System\GameStates\IGameState.h" />
     <ClInclude Include="Source\State System\Main\Game.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C263C75B-CEA8-4738-A702-40C759374691}</ProjectGuid>
