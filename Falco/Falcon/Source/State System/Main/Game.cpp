@@ -18,41 +18,16 @@ CGame::CGame(float _fScreenWidth, float _fScreenHeight, bool _bIsWindowed, HWND 
 	//Handle to the window
 	m_hwnd = _hwnd;
 
-	Vector2 a(1,2);
-	Vector2 b(3,4);
+	Vector2 a(3,0);
+	Vector2 b(5,5);
+	Vector2 c(1,2);
+	Vector2 d(2,1);
 
-	cout << a << b;
+	cout << a.AngleBetweenRadians(b) << endl;
+	cout << a.AngleBetweenDegrees(b) << endl;
 
-
-	Vector2 c;
-	float t;
-
-	c = a + b;
-	cout << c;
-
-	c += a;
-	cout << c;
-
-	t = a.x + b.y;
-	cout << t << endl; 
-
-	c = a * b;
-
-	cout << c;
-
-	c = a.x * b.x;
-
-	cout << c;
-
-	c = a.yx * b.xy;
-
-	cout << "test" << endl;
-
-	c = a;
-
-	c.xy *= a.xy;
-
-	cout << c;
+	cout << AngleBetweenRadians(a,b) << endl;
+	cout << AngleBetweenDegrees(b,a) << endl;
 
 }
 
