@@ -1,6 +1,7 @@
-#ifndef CVECTOR2_H
-#define CVECTOR2_H
+#ifndef VECTOR2_H
+#define VECTOR2_H
 
+//TODO SW Move to correct lib
 #define EPSILON 0.000001 
 #define PI	3.141592f
 
@@ -58,11 +59,14 @@ private:
 
 		Vector2& operator/=( const Vector2 &_rhs )
 		{
-			if ( _rhs.x > 0.000001 || _rhs.x < -0.000001)
+			if ( !isZero(rhs.x) )
 				m_fComponents[a] /= _rhs.x;
 
-			if ( _rhs.y > 0.000001 || _rhs.y < -0.000001)
+			if ( !isZero(rhs.y) )
 				m_fComponents[b] /= _rhs.y;
+
+			if ( !isZero(rhs.z) )
+				m_fComponents[b] /= _rhs.z;
 
 			return *(Vector2*)this;
 		}
@@ -84,7 +88,7 @@ private:
 
 		Vector2 operator/( const Vector2 &_rhs)
 		{
-			if ( (_rhs.x < 0.000001 && _rhs.x > -0.000001)  ||   ( _rhs.y < 0.000001 && _rhs.y > -0.000001)  )
+			if ( isZero(_rhs.x)  ||  isZero(_rhs.y)  )
 				cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 
 
@@ -213,7 +217,7 @@ public:
 
 		struct
 		{
-			//Allowing the user to use x or a
+			//Allowing the user to use x or r
 			union 
 			{
 				float x;
@@ -221,7 +225,7 @@ public:
 
 			};
 
-			//Allowing the user to use y or b
+			//Allowing the user to use y or g
 			union
 			{
 				float y;
