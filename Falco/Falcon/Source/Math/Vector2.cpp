@@ -180,13 +180,98 @@ float Vector2::AngleBetweenDegrees( Vector2 const &_rhs)
 }
 
 
-//Rotate the vector
-void Vector2::Rotate(float _radians)
+//Rotate the vector with Radians
+void Vector2::RotateAboutOriginRadians(float _radians)
 {
+	//Store the value so when we change it we dont mess up our calculations
+	float prevX = x;
+
+	//Calculate the rotation
+	x = (cos(_radians) * x ) - (sin(_radians) * y);
+	y = (sin(_radians) * prevX ) + (cos(_radians) * y);
+
+	//Set it to zero if its close enough
+	if ( isZero(x) )
+		x = 0.0f;
+	if ( isZero(y) )
+		y = 0.0f;
 
 }
 
+//Rotate the vector with Degrees
+void Vector2::RotateAboutOriginDegrees(float _degrees)
+{
+	//Convert to Radians
+	float radians = DegreesToRadians(_degrees);
+	
+	//Store the value so when we change it we dont mess up our calculations
+	float prevX = x;
+
+	//Calculate the rotation
+	x = ( x * cos(radians) ) - ( y * sin(radians) );
+	y = ( prevX  * sin(radians) ) + (y * cos(radians) );
+
+	//Set it to zero if its close enough
+	if ( isZero(x) )
+		x = 0.0f;
+	if ( isZero(y) )
+		y = 0.0f;
+
+}
+
+
+//Rotate around Vector with Radians
+void Vector2::RotateAroundPointRadians(float _radians, Vector2 _point )
+{
+	//Moving the vector to the origin
+	float posX = x - _point.x;
+	float posY = y - _point.y;
+
+	//Do the calculations and move back in relation to rotation point
+	x = ( posX * cos(_radians) ) - ( posY * sin(_radians) ) + _point.x;
+	y = ( posX  * sin(_radians) ) + (posY * cos(_radians) ) + _point.y;
+
+	//If its close enough to zero make it zero
+	if ( isZero(x) )
+		x = 0.0f;
+	if ( isZero(y) )
+		y = 0.0f;
+}
+
+//Rotate around Vector with Degrees
+void Vector2::RotateAroundPointDegrees(float _degrees, Vector2 _point )
+{
+	
+	float radians = DegreesToRadians(_degrees);
+	
+	//Moving the vector to the origin
+	float posX = x - _point.x;
+	float posY = y - _point.y;
+
+	//Do the calculations and move back in relation to rotation point
+	x = ( posX * cos(radians) ) - ( posY * sin(radians) ) + _point.x;
+	y = ( posX  * sin(radians) ) + (posY * cos(radians) ) + _point.y;
+
+	//If its close enough to zero make it zero
+	if ( isZero(x) )
+		x = 0.0f;
+	if ( isZero(y) )
+		y = 0.0f;
+
+}
+
+
+
+
+//Negate the vector
+void Vector2::Negate() 
+{
+	xy *= -1;
+}
+
+
 //TODO Move to Regular Math
+//{
 bool isZero(float _Value)
 {
 	return ( (_Value < EPSILON) && (_Value > -EPSILON ) );
@@ -197,7 +282,12 @@ float RadianToDegrees( float _rad )
 	return _rad * 180 / PI;
 }
 
+float DegreesToRadians( float _deg )
+{
+	return _deg * PI / 180;
+}
 
+//}
 
 
 

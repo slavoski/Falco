@@ -1,7 +1,7 @@
 #ifndef CVECTOR2_H
 #define CVECTOR2_H
 
-#define EPSILON 0.000001f 
+#define EPSILON 0.000001 
 #define PI	3.141592f
 
 
@@ -170,6 +170,8 @@ public:
 	//Sets this equal to the right hand side vector
 	Vector2 operator=  (Vector2 const &_rhs);
 
+	
+
 	//Normalize's this
 	void Normalize();
 
@@ -185,10 +187,20 @@ public:
 	//Find the angle between in Degrees
 	float AngleBetweenDegrees( Vector2 const &_rhs);
 
-	//Rotate the vector
-	void Rotate(float _radians);
+	//Rotate the vector with Radians
+	void RotateAboutOriginRadians(float _radians);
 
+	//Rotate the vector with Degrees
+	void RotateAboutOriginDegrees(float _degrees);
 
+	//Rotate around Vector with Radians
+	void RotateAroundPointRadians(float _radians, Vector2 _point );
+
+	//Rotate around Vector with Degrees
+	void RotateAroundPointDegrees(float _degrees, Vector2 _point );
+
+	//Negate the vector
+	void Negate() ;
 
 
 	//Variables
@@ -248,7 +260,7 @@ void Rotate(Vector2 const &vector, float _radians);
 //TODO put somewhere better
 bool isZero(float _Value );
 float RadianToDegrees( float _rad );
-
+float DegreesToRadians( float _deg );
 
 #endif // !VECTOR2_H
 
