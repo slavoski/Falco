@@ -23,7 +23,7 @@ Vector2::~Vector2(void)
 {
 }
 
-
+//Operator Overloads
 
 Vector2 Vector2::operator+(  const Vector2 &_rhs)
 {
@@ -44,12 +44,15 @@ Vector2 Vector2::operator*( const Vector2 &_rhs)
 
 Vector2 Vector2::operator/( const Vector2 &_rhs)
 {
-	if ( (_rhs.x < 0.000001 && _rhs.x > -0.000001)  ||   ( _rhs.y < 0.000001 && _rhs.y > -0.000001)  )
+	//Dont want to divide by zero
+	if ( isZero(_rhs.x)  ||  isZero(_rhs.y)  )
+	{
 		cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
-
+	}
 
 	return Vector2( x / _rhs.x, y / _rhs.y );
 }
+
 
 void Vector2::operator+= ( const Vector2 &_rhs)
 {
@@ -76,7 +79,7 @@ void Vector2::operator*= ( const Vector2 &_rhs)
 void Vector2::operator/= ( const Vector2 &_rhs)
 {
 	//Dont want to divide by zero
-	if ( (_rhs.x < 0.000001 && _rhs.x > -0.000001)  ||   ( _rhs.y < 0.000001 && _rhs.y > -0.000001)  )
+	if ( isZero(_rhs.x)  ||   isZero(_rhs.y)  )
 	{
 		cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 		return;
@@ -124,12 +127,26 @@ void Vector2::Normalize()
 {
 	float fMagnitude = Magnitude();
 
-	if ( (fMagnitude > -EPSILON) && (fMagnitude < EPSILON) )
+	if ( isZero(fMagnitude) )
 		fMagnitude = 1.0f;
 
 	xy /= fMagnitude;
 
 }
+
+
+//GetNormalization
+Vector2 Vector2::GetNormalization() 
+{
+	float fMagnitude = Magnitude();
+
+	if ( isZero(fMagnitude) )
+		fMagnitude = 1.0f;
+
+	return Vector2(this->xy / fMagnitude);
+
+}
+
 
 //Find the magnitude
 float Vector2::Magnitude() const
@@ -261,13 +278,48 @@ void Vector2::RotateAroundPointDegrees(float _degrees, Vector2 _point )
 }
 
 
-
-
 //Negate the vector
 void Vector2::Negate() 
 {
 	xy *= -1;
 }
+
+//Reflect the Vector of the coinciding vector
+void Vector2::Reflect( Vector2 _rhs)
+{
+	if ( isZero( Dot( _rhs ) )) 
+	{
+		Negate();
+	}
+	else
+	{
+		Vector2 normRhs;
+		normRhs = _rhs.GetNormalization();
+		float result = Dot(normRhs);
+		result *= 2.0f;
+
+		normRhs *= result;
+
+		
+		xy -= normRhs;
+
+	}
+
+
+}
+
+
+//Get the Normalization of the passed in Vector
+Vector2 Normalize( Vector2 _vector )
+{
+	float fMagnitude = _vector.Magnitude();
+
+	if ( (fMagnitude > -EPSILON) && (fMagnitude < EPSILON) )
+		fMagnitude = 1.0f;
+
+	return Vector2(_vector.xy / fMagnitude);
+}
+
 
 
 //TODO Move to Regular Math
@@ -341,6 +393,6 @@ float AngleBetweenRadians(Vector2 const &_lhs, Vector2 const &_rhs)
 
 
 
-//Rotate the vector
-void Rotate(Vector2 const &vector, float _radians);
+
+
 

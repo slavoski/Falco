@@ -10,18 +10,18 @@
 class Vector2
 {
 private:
-
-
-
+	//used to be able to pass any value in
 	template< int a, int b >
 	class swizzle
 	{
 	private:
+		//Allows access to the vector's values
 		float m_fComponents[2];
 
 
 
 	public:
+		//Operator Overloads
 		Vector2& operator=( const Vector2 &_rhs )
 		{
 
@@ -92,8 +92,6 @@ private:
 		}
 
 
-
-
 		//Compares Two vectors and returns true if they are equal
 		bool operator== (Vector2 const &_rhs)
 		{
@@ -107,7 +105,7 @@ private:
 		}
 
 
-
+		//Allows you to invoke the vector without actually calling it
 		operator Vector2()
 		{
 			return Vector2( m_fComponents[a], m_fComponents[b] );
@@ -175,6 +173,9 @@ public:
 	//Normalize's this
 	void Normalize();
 
+	//GetNormalization
+	Vector2 GetNormalization();
+
 	//Find the magnitude
 	float Magnitude() const;
 
@@ -202,6 +203,8 @@ public:
 	//Negate the vector
 	void Negate() ;
 
+	//Reflect the Vector of the coinciding vector
+	void Reflect( Vector2 _rhs);
 
 	//Variables
 	//The X and Y of the Vector
@@ -234,13 +237,14 @@ public:
 		swizzle<0,1> rg;
 		swizzle<1,0> gr;
 
+
 	};
 
 };
 
 
 
-
+//Allow you to print out the values in the vector
 std::ostream& operator<<(ostream &output, const Vector2 &vector );
 
 //Find the dot Product
@@ -252,9 +256,8 @@ float AngleBetweenRadians(Vector2 const &_lhs, Vector2 const &_rhs);
 //Find the angle between in Radians
 float AngleBetweenDegrees(Vector2 const &_lhs, Vector2 const &_rhs);
 
-//Rotate the vector
-void Rotate(Vector2 const &vector, float _radians);
-
+//Get the Normalization of the passed in Vector
+Vector2 Normalize( Vector2 _vector );
 
 //Check if the value is zero
 //TODO put somewhere better
