@@ -1,11 +1,9 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
-//TODO SW Move to correct lib
-#define EPSILON 0.000001 
-#define PI	3.141592f
 
-
+#include "Math.h"
+using namespace Math;
 
 
 class Vector2
@@ -59,14 +57,12 @@ private:
 
 		Vector2& operator/=( const Vector2 &_rhs )
 		{
-			if ( !isZero(rhs.x) )
+			if ( !Math::isZero(_rhs.x) )
 				m_fComponents[a] /= _rhs.x;
 
-			if ( !isZero(rhs.y) )
+			if ( !Math::isZero(_rhs.y) )
 				m_fComponents[b] /= _rhs.y;
 
-			if ( !isZero(rhs.z) )
-				m_fComponents[b] /= _rhs.z;
 
 			return *(Vector2*)this;
 		}
@@ -88,7 +84,7 @@ private:
 
 		Vector2 operator/( const Vector2 &_rhs)
 		{
-			if ( isZero(_rhs.x)  ||  isZero(_rhs.y)  )
+			if ( Math::isZero(_rhs.x)  ||  Math::isZero(_rhs.y)  )
 				cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 
 
@@ -263,11 +259,7 @@ float AngleBetweenDegrees(Vector2 const &_lhs, Vector2 const &_rhs);
 //Get the Normalization of the passed in Vector
 Vector2 Normalize( Vector2 _vector );
 
-//Check if the value is zero
-//TODO put somewhere better
-bool isZero(float _Value );
-float RadianToDegrees( float _rad );
-float DegreesToRadians( float _deg );
+
 
 #endif // !VECTOR2_H
 

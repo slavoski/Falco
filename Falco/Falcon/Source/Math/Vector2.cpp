@@ -27,7 +27,7 @@ Vector2::~Vector2(void)
 
 Vector2 Vector2::operator+(  const Vector2 &_rhs)
 {
-	return Vector2( x + _rhs.x,	y += _rhs.y);
+	return Vector2( x + _rhs.x,	y + _rhs.y);
 }
 
 Vector2 Vector2::operator-( const Vector2 &_rhs) const
@@ -45,7 +45,7 @@ Vector2 Vector2::operator*( const Vector2 &_rhs)
 Vector2 Vector2::operator/( const Vector2 &_rhs)
 {
 	//Dont want to divide by zero
-	if ( isZero(_rhs.x)  ||  isZero(_rhs.y)  )
+	if ( Math::isZero(_rhs.x)  ||  Math::isZero(_rhs.y)  )
 	{
 		cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 	}
@@ -79,7 +79,7 @@ void Vector2::operator*= ( const Vector2 &_rhs)
 void Vector2::operator/= ( const Vector2 &_rhs)
 {
 	//Dont want to divide by zero
-	if ( isZero(_rhs.x)  ||   isZero(_rhs.y)  )
+	if ( Math::isZero(_rhs.x)  ||   Math::isZero(_rhs.y)  )
 	{
 		cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 		return;
@@ -113,7 +113,7 @@ bool Vector2::operator== (Vector2 const &_rhs)
 //Compares Two Vectors and returns true if they are not equal
 bool Vector2::operator!= (Vector2 const &_rhs)
 {
-	return xy != _rhs.x;
+	return xy != _rhs;
 }
 
 //Sets this equal to the right hand side vector
@@ -127,7 +127,7 @@ void Vector2::Normalize()
 {
 	float fMagnitude = Magnitude();
 
-	if ( isZero(fMagnitude) )
+	if ( Math::isZero(fMagnitude) )
 		fMagnitude = 1.0f;
 
 	xy /= fMagnitude;
@@ -140,7 +140,7 @@ Vector2 Vector2::GetNormalization()
 {
 	float fMagnitude = Magnitude();
 
-	if ( isZero(fMagnitude) )
+	if ( Math::isZero(fMagnitude) )
 		fMagnitude = 1.0f;
 
 	return Vector2(this->xy / fMagnitude);
@@ -169,13 +169,11 @@ float Vector2::AngleBetweenRadians( Vector2 const &_rhs)
 	float magB = _rhs.Magnitude();
 	float magC = c.Magnitude();
 
-	if( isZero(magA) || isZero(magB) || isZero(magC) )
+	if( Math::isZero(magA) || Math::isZero(magB) || Math::isZero(magC) )
 		return 0;
 
 	return acosf( Dot(_rhs) / (magA * magB)  );
 
-
-		//crap need to find the dif between mag and length
 }
 
 //Find the angle between in Degrees
@@ -187,12 +185,12 @@ float Vector2::AngleBetweenDegrees( Vector2 const &_rhs)
 	float magB = _rhs.Magnitude();
 	float magC = c.Magnitude();
 
-	if( isZero(magA) || isZero(magB) || isZero(magC) )
+	if( Math::isZero(magA) || Math::isZero(magB) || Math::isZero(magC) )
 		return 0;
 
 	float resultInRadians = acosf( Dot(_rhs) / (magA * magB)  );
 
-	return RadianToDegrees(resultInRadians) ;
+	return Math::RadiansToDegrees(resultInRadians) ;
 
 }
 
@@ -208,9 +206,9 @@ void Vector2::RotateAboutOriginRadians(float _radians)
 	y = (sin(_radians) * prevX ) + (cos(_radians) * y);
 
 	//Set it to zero if its close enough
-	if ( isZero(x) )
+	if ( Math::isZero(x) )
 		x = 0.0f;
-	if ( isZero(y) )
+	if ( Math::isZero(y) )
 		y = 0.0f;
 
 }
@@ -229,9 +227,9 @@ void Vector2::RotateAboutOriginDegrees(float _degrees)
 	y = ( prevX  * sin(radians) ) + (y * cos(radians) );
 
 	//Set it to zero if its close enough
-	if ( isZero(x) )
+	if ( Math::isZero(x) )
 		x = 0.0f;
-	if ( isZero(y) )
+	if ( Math::isZero(y) )
 		y = 0.0f;
 
 }
@@ -249,9 +247,9 @@ void Vector2::RotateAroundPointRadians(float _radians, Vector2 _point )
 	y = ( posX  * sin(_radians) ) + (posY * cos(_radians) ) + _point.y;
 
 	//If its close enough to zero make it zero
-	if ( isZero(x) )
+	if ( Math::isZero(x) )
 		x = 0.0f;
-	if ( isZero(y) )
+	if ( Math::isZero(y) )
 		y = 0.0f;
 }
 
@@ -270,9 +268,9 @@ void Vector2::RotateAroundPointDegrees(float _degrees, Vector2 _point )
 	y = ( posX  * sin(radians) ) + (posY * cos(radians) ) + _point.y;
 
 	//If its close enough to zero make it zero
-	if ( isZero(x) )
+	if ( Math::isZero(x) )
 		x = 0.0f;
-	if ( isZero(y) )
+	if ( Math::isZero(y) )
 		y = 0.0f;
 
 }
@@ -287,7 +285,7 @@ void Vector2::Negate()
 //Reflect the Vector of the coinciding vector
 void Vector2::Reflect( Vector2 _rhs)
 {
-	if ( isZero( Dot( _rhs ) )) 
+	if ( Math::isZero( Dot( _rhs ) )) 
 	{
 		Negate();
 	}
@@ -301,7 +299,7 @@ void Vector2::Reflect( Vector2 _rhs)
 		normRhs *= result;
 
 		
-		xy -= normRhs;
+		xy = normRhs - xy;
 
 	}
 
@@ -314,7 +312,7 @@ Vector2 Normalize( Vector2 _vector )
 {
 	float fMagnitude = _vector.Magnitude();
 
-	if ( (fMagnitude > -EPSILON) && (fMagnitude < EPSILON) )
+	if ( isZero(fMagnitude) )
 		fMagnitude = 1.0f;
 
 	return Vector2(_vector.xy / fMagnitude);
@@ -322,24 +320,7 @@ Vector2 Normalize( Vector2 _vector )
 
 
 
-//TODO Move to Regular Math
-//{
-bool isZero(float _Value)
-{
-	return ( (_Value < EPSILON) && (_Value > -EPSILON ) );
-}
 
-float RadianToDegrees( float _rad )
-{
-	return _rad * 180 / PI;
-}
-
-float DegreesToRadians( float _deg )
-{
-	return _deg * PI / 180;
-}
-
-//}
 
 
 
@@ -362,12 +343,12 @@ float AngleBetweenDegrees(Vector2 const &_lhs, Vector2 const &_rhs)
 	float magB = _rhs.Magnitude();
 	float magC = c.Magnitude();
 
-	if( isZero(magA) || isZero(magB) || isZero(magC) )
+	if( Math::isZero(magA) || Math::isZero(magB) || Math::isZero(magC) )
 		return 0;
 
 	float resultInRadians = acosf( Dot(_lhs,_rhs) / (magA * magB)  );
 
-	return RadianToDegrees(resultInRadians) ;
+	return RadiansToDegrees(resultInRadians) ;
 
 
 }
@@ -380,7 +361,7 @@ float AngleBetweenRadians(Vector2 const &_lhs, Vector2 const &_rhs)
 	float magB = _rhs.Magnitude();
 	float magC = c.Magnitude();
 
-	if( isZero(magA) || isZero(magB) || isZero(magC) )
+	if( Math::isZero(magA) || Math::isZero(magB) || Math::isZero(magC) )
 		return 0;
 
 	float resultInRadians = acosf( Dot(_lhs,_rhs) / (magA * magB)  );

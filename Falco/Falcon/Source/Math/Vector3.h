@@ -1,13 +1,6 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
-//TODO SW Move to correct lib
-#define EPSILON 0.000001
-#define PI	3.141592f
-
-
-
-
 class Vector3
 {
 private:
@@ -63,13 +56,13 @@ private:
 
 		Vector3& operator/=( const Vector3 &_rhs )
 		{
-			if ( !isZero(rhs.x) )
+			if ( !Math::isZero(_rhs.x) )
 				m_fComponents[a] /= _rhs.x;
 
-			if ( !isZero(rhs.y) )
+			if ( !Math::isZero(_rhs.y) )
 				m_fComponents[b] /= _rhs.y;
 
-			if ( !isZero(rhs.z) )
+			if ( !Math::isZero(_rhs.z) )
 				m_fComponents[c] /= _rhs.z;
 
 			return *(Vector3*)this;
@@ -92,7 +85,7 @@ private:
 
 		Vector3 operator/( const Vector3 &_rhs)
 		{
-			if ( isZero( _rhs.x )  ||   isZero( _rhs.y) || isZero( _rhs.z )  )
+			if ( Math::isZero( _rhs.x )  ||  Math::isZero( _rhs.y) || Math::isZero( _rhs.z )  )
 				cout << endl << "ERROR: DIVIDING BY ZERO!!: " << _rhs;
 				throw "Error Dividing Vector3";
 
@@ -287,11 +280,6 @@ float AngleBetweenDegrees(Vector3 const &_lhs, Vector3 const &_rhs);
 //Get the Normalization of the passed in Vector
 Vector3 Normalize( Vector3 _vector );
 
-//Check if the value is zero
-//TODO put somewhere better
-bool isZero(float _Value );
-float RadianToDegrees( float _rad );
-float DegreesToRadians( float _deg );
 
 #endif // !Vector3_H
 

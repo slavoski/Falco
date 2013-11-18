@@ -1,6 +1,6 @@
 #include "../../stdafx.h"
 #include "Game.h"
-#include "../../Math/Vector2.h"
+#include "../../Math/Vector3.h"
 
 
 CGame::CGame(float _fScreenWidth, float _fScreenHeight, bool _bIsWindowed, HWND _hwnd)
@@ -18,14 +18,25 @@ CGame::CGame(float _fScreenWidth, float _fScreenHeight, bool _bIsWindowed, HWND 
 	//Handle to the window
 	m_hwnd = _hwnd;
 
-	Vector2 a(0,2);
-	Vector2 b(3,5);
-	Vector2 c(1,2);
-	Vector2 d(2,1);
+	Vector3 a(1,1,1);
+	Vector3 b(3,5,7);
+	Vector3 c(1,2,3);
+	Vector3 d(2,1,3);
 
-	b.Reflect(Vector2(4,10));
+	
 
-	cout << b;
+	cout << a + b;
+	cout << a - b;
+	cout << a * b;
+	cout << a / b;
+
+	a.Negate();
+
+	cout << a;
+
+	a.Normalize();
+
+	cout << a;
 
 }
 

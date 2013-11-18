@@ -11,11 +11,11 @@
 #include <string>
 using namespace std;
 
+#include <glew.h>
+#include <freeglut.h>
 
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp.lib")
-
-
 
 
 
