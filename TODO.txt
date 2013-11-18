@@ -1,1 +1,4 @@
-Look through the math Vector2 and Vector3 and debug it! Try to see if you can break it.
+1. Look through the math Vector2 and Vector3 and debug it! Try to see if you can break it.
+2. Make a timer class that keeps track of time,  the time it took one frame, can slow down time, speed up time.
+3. Look at Incorporating a class to handle all keyboard, mouse, and controllers.
+4. Create a Base Entity Class that all entities will inherit from.
