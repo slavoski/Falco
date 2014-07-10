@@ -1,7 +1,7 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
-#include <Windows.h>
+#include <windows.h>
 
 #include <process.h>
 
@@ -17,7 +17,7 @@ using namespace std;
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp.lib")
 
-
+#include <sstream>
 
 #endif
 
