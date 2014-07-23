@@ -32,6 +32,15 @@
     <Filter Include="Math\Source Files">
       <UniqueIdentifier>{24280dc2-cafc-459f-bfe0-ee6482ae4359}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{5eba156f-d20d-4339-b19b-f9d801ffbf21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates\Header Files">
+      <UniqueIdentifier>{f2faca45-d07b-48de-9b2a-5e585fe300ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates\Source Files">
+      <UniqueIdentifier>{11382867-8f33-48fb-aae0-00f255772071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -43,6 +52,21 @@
     <ClCompile Include="Source\Renderer\Renderer.cpp">
       <Filter>Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\State System\Main\Game.cpp">
+      <Filter>GameStates\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Math.cpp">
+      <Filter>Math\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector2.cpp">
+      <Filter>Math\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector3.cpp">
+      <Filter>Math\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector4.cpp">
+      <Filter>Math\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
@@ -51,5 +75,24 @@
     <ClInclude Include="Source\Renderer\Renderer.h">
       <Filter>Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\State System\GameStates\IGameState.h">
+      <Filter>GameStates\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\State System\Main\Game.h">
+      <Filter>GameStates\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Math.h">
+      <Filter>Math\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector2.h">
+      <Filter>Math\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector3.h">
+      <Filter>Math\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector4.h">
+      <Filter>Math\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Config.h" />
   </ItemGroup>
 </Project>

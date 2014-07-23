@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 #include "Renderer.h"
 
+#include "../../RenderConfig.h"
 
 const GLchar* VertexShader = 
 	{
@@ -69,12 +70,14 @@ Renderer::~Renderer(void)
 {
 }
 
-bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], int _nWindowWidth, int _nWindowHeight, char* _szWindowTitle, bool _bFullScreen)
+bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char* _szWindowTitle, int _posX, int _posY)
 {
 	//Initialize the member variables
-	m_nWindowWidth  = _nWindowWidth;
-	m_nWindowHeight = _nWindowHeight;
-	m_bFullscreen   = _bFullScreen;
+	m_nWindowWidth  = WINDOW_WIDTH;
+	m_nWindowHeight = WINDOW_HEIGHT;
+	
+	//Check Config File to see if it is
+	m_bFullscreen   = false;
 	
 	memcpy(m_sszWindowTitle, _szWindowTitle, sizeof(_szWindowTitle) + 1);
 
@@ -142,6 +145,11 @@ bool Renderer::ResizeWindow(int _nWindowWidth, int _nWindowHeight, bool _bFullSc
 	glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
 
 	return true;
+}
+
+void Renderer::Update( void )
+{
+	glutMainLoop();
 }
 
 

@@ -1,23 +1,10 @@
 #include "stdafx.h"
 #include "State System\Main\Game.h"
 
-//TODO REMOVE
-#include "Renderer\Renderer.h"
 
 //#include "../Libs/VLDInclude/vld.h"
 //#include  "../Libs/VLDInclude/vld_def.h"
 //#include "../resource.h"
-
-
-
-
-
-const char* g_szWINDOW_CLASS_NAME	= "WindowClass";
-const char* g_szWINDOW_TITLE	= "Falco";
-int	g_nWINDOW_WIDTH			= 1024;
-int	g_nWINDOW_HEIGHT		= 768;
-
-
 
 
 
@@ -39,16 +26,13 @@ int DebugMain(int nArgc, char* cArgv[])
 
 	DEBUG_OUTPUT("\n----------------------------Debug Window: -------------------------------------\n");
 
-
-
-	//WinMain(GetModuleHandle(NULL), NULL, GetCommandLineA(), SW_SHOWDEFAULT);
 	return 0;
 
 }
 
 
-
-
+//When the user hits the red X in the top right corner or stops the game
+void GameOver( void );
 
 
 
@@ -63,20 +47,40 @@ int main(int nArgc, char* cArgv[] )
 	(void)nArgc;
 	(void)cArgv;
 	
-	//TODO: Initialize the game here
-	Renderer temp;
-	temp.Initialize(nArgc, cArgv, g_nWINDOW_WIDTH, g_nWINDOW_HEIGHT, "Falco", false);
+	//Startup the game and make sure you were succesfull
+	CGame* pGame = CGame::GetInstance();
+	bool startup = pGame->Startup();
+	
+	if(!startup)
+	{
+		DEBUG_OUTPUT("Error on Startup");
+		return 1;
+	}
+
+
+	glutCloseFunc( GameOver );
+
+	while(pGame->IsRunning())
+	{
+		pGame->Update();
+		pGame->Render();
+	}
+
+	pGame->Shutdown();
+	pGame->DeleteInstance();
+	pGame = NULL;
 
 	
-
-	glutMainLoop();
-
 	exit(EXIT_SUCCESS);
 	
 }
 
 
 
-
+void GameOver( void )
+{
+	CGame* pGame = CGame::GetInstance();
+	pGame->SetRunning(false);
+}
 
 
