@@ -2,13 +2,12 @@
 #include "Game.h"
 #include "../../Math/Vector3.h"
 
+
+
 CGame* CGame::s_Instance = NULL;
 
 CGame::CGame( void )
 {
-	m_nScreenWidth  = 0;
-	m_nScreenHeight = 0;
-	m_bIsWindowed   = false;
 	m_pCurrState	= NULL;
 	m_hwnd			= NULL;
 	m_bRunning		= false;

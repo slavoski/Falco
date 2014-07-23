@@ -1,7 +1,7 @@
 #include "../stdafx.h"
 #include "Renderer.h"
 
-#include "../../RenderConfig.h"
+
 
 const GLchar* VertexShader = 
 	{
@@ -42,8 +42,6 @@ GLuint VertexShaderId,
 	   VaoId,
 	   VboId,
 	   ColorBufferId;
-int	gg_nWINDOW_WIDTH		= 1024;
-int	gg_nWINDOW_HEIGHT		= 768;
 
 void Cleanup(void);
 void TimerFunction(int _nValue);
@@ -76,7 +74,7 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	m_nWindowWidth  = WINDOW_WIDTH;
 	m_nWindowHeight = WINDOW_HEIGHT;
 	
-	//Check Config File to see if it is
+	//TODO: Check Config File to see if it is
 	m_bFullscreen   = false;
 	
 	memcpy(m_sszWindowTitle, _szWindowTitle, sizeof(_szWindowTitle) + 1);
@@ -84,15 +82,12 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	//Initialize GLUT and set its parameters
 	glutInit(&_nArgumentCount, _szArgumentVector);
 
-	glutInitContextVersion(4, 0);
-	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
-	glutInitContextProfile(GLUT_CORE_PROFILE);
-
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION	);
 
-	glutInitWindowSize(_nWindowWidth, _nWindowHeight);
+	glutInitWindowSize(m_nWindowWidth, m_nWindowHeight);
+	glutInitWindowPosition(_posX, _posY);
 
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
 	m_nWindowHandle = glutCreateWindow(_szWindowTitle);
 
@@ -101,15 +96,6 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 		fprintf(stderr,	"ERROR: Could not create a new rendering window.\n"	);
 		exit(EXIT_FAILURE);
 	}
-
-	glutReshapeFunc(ResizeFunction);
-	glutDisplayFunc(RenderFunction);
-	glutIdleFunc(IdleFunction);
-	glutTimerFunc(0, TimerFunction, 0);
-	glutCloseFunc(Cleanup);
-	
-
-	glewExperimental=TRUE;
 
 	GLenum GlewInitResult;
 	GlewInitResult = glewInit();
@@ -121,6 +107,22 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	}
 
 	fprintf(stdout,	"INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
+
+	//Initialize the various OpenGl options
+	//TODO
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	
+
+	glutReshapeFunc(ResizeFunction);
+	glutDisplayFunc(RenderFunction);
+	glutIdleFunc(IdleFunction);
+	glutTimerFunc(0, TimerFunction, 0);
+	glutCloseFunc(Cleanup);
+
 
 	CreateShaders();
 	CreateVBO();
@@ -181,7 +183,7 @@ void TimerFunction(int _nValue)
 	if (0 != _nValue) 
 	{
 		std::stringstream test;
-		test << m_sszWindowTitle << ": " << uiFrameCount * 4 << " Frames Per Second @ " << gg_nWINDOW_WIDTH << " x " << gg_nWINDOW_HEIGHT;
+		test << m_sszWindowTitle << ": " << uiFrameCount * 4 << " Frames Per Second @ " << WINDOW_WIDTH << " x " << WINDOW_HEIGHT;
 		
 		try
 		{

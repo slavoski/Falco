@@ -1,6 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "../Configs/RenderConfig.h"
+
 class Renderer
 {
 public:

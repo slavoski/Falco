@@ -41,6 +41,9 @@
     <Filter Include="GameStates\Source Files">
       <UniqueIdentifier>{11382867-8f33-48fb-aae0-00f255772071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configs">
+      <UniqueIdentifier>{7eb6954b-20ce-421a-9fa3-fa471fbee427}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -93,6 +96,8 @@
     <ClInclude Include="Source\Math\Vector4.h">
       <Filter>Math\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Config.h" />
+    <ClInclude Include="Source\Configs\RenderConfig.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

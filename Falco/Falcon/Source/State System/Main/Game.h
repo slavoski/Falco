@@ -4,7 +4,7 @@
 #include "../../stdafx.h"
 #include "../GameStates/IGameState.h"
 #include "../../Renderer/Renderer.h"
-#include "../../Config.h"
+
 
 class CGame
 {
