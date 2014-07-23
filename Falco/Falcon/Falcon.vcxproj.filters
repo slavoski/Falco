@@ -1,81 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\GameStates">
-      <UniqueIdentifier>{bf37f405-243c-4aba-90ac-a3ddf874c339}</UniqueIdentifier>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4e05e93a-d048-457d-845e-544f1af47d8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Main">
-      <UniqueIdentifier>{7aa3bb6f-4ae9-4648-9d48-a70a95a55486}</UniqueIdentifier>
+    <Filter Include="Main\Header Files">
+      <UniqueIdentifier>{4714340f-ffc2-4e3c-8920-45a2ae79f629}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Main">
-      <UniqueIdentifier>{ad1c251c-1337-442c-8531-24a0cd9332bb}</UniqueIdentifier>
+    <Filter Include="Main\Source Files">
+      <UniqueIdentifier>{25ba1da1-241a-47ec-973a-928eb6a9122e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameStates">
-      <UniqueIdentifier>{e3df8dc6-bbf6-45b9-9078-d676eaca4e75}</UniqueIdentifier>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{cff294db-c110-4455-baaa-d6222f1df856}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{806777d1-e204-496e-b42b-58d55db81b64}</UniqueIdentifier>
+    <Filter Include="Renderer\Header Files">
+      <UniqueIdentifier>{4c117299-6dd7-4eba-b5d0-ff6bde499d05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{dd5ffa3c-4a68-4271-8567-ac0c7805beb4}</UniqueIdentifier>
+    <Filter Include="Renderer\Source Files">
+      <UniqueIdentifier>{88da3eba-d13a-492e-b48c-68e09b733db9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{0fae138d-4b28-4719-ad0d-41d1395283e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Header Files">
+      <UniqueIdentifier>{5370d629-727d-4962-acc5-7f37fcee8a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Source Files">
+      <UniqueIdentifier>{24280dc2-cafc-459f-bfe0-ee6482ae4359}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Main\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Source\stdafx.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Main\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WinMain.cpp">
-      <Filter>Source Files\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\State System\Main\Game.cpp">
-      <Filter>Source Files\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector2.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector3.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Vector4.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Math.cpp">
-      <Filter>Source Files\Math</Filter>
+    <ClCompile Include="Source\Renderer\Renderer.cpp">
+      <Filter>Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\stdafx.h">
-      <Filter>Header Files</Filter>
+      <Filter>Main\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\State System\Main\Game.h">
-      <Filter>Header Files\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\State System\GameStates\IGameState.h">
-      <Filter>Header Files\GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Vector2.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Vector3.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Vector4.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Math.h">
-      <Filter>Header Files\Math</Filter>
+    <ClInclude Include="Source\Renderer\Renderer.h">
+      <Filter>Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
