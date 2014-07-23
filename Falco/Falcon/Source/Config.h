@@ -1,0 +1,2 @@
+#define WINDOW_HEIGHT = 768
+#define WINDOW_WIDTH  = 1024
