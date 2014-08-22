@@ -52,7 +52,7 @@ bool CGame::Startup(void)
 	m_bRunning = true;
 
 	m_pRenderer = new Renderer();
-	m_pRenderer->Initialize(0, NULL, WINDOW_TITLE, 0, 0);
+	m_pRenderer->Initialize(0, NULL, WINDOW_TITLE, 50, 50);
 
 	//Get a handle to the window
 	//m_hwnd
@@ -85,11 +85,17 @@ bool CGame::Startup(void)
 
 bool CGame::Input()
 {
+	
+
+	if(GetAsyncKeyState(FULLSCREEN)  & 0x1 )
+	{
+		m_pRenderer->Fullscreen( !m_pRenderer->GetFullscreen() );
+	}
+
 	if(m_pCurrState == NULL)
 	{
 		return false;
 	}
-
 
 	return m_pCurrState->Input();
 
@@ -120,11 +126,33 @@ void CGame::Update()
 		m_pCurrState->Update(fElapsed);
 	}
 	
+	SDL_Event test_event;
+	while (SDL_PollEvent(&test_event))
+	{
+		switch(test_event.type)
+		{
+			case SDL_QUIT:
+				{
+					m_bRunning = false;
+				}
+				break;
+
+		}
+	}
+
+	m_pRenderer->Update();
+
 }
 
 void CGame::Render()
 {
-	m_pRenderer->Update();
+	m_pRenderer->BeginScene();
+
+
+	
+
+
+	m_pRenderer->EndScene();
 }
 
 //Remove anything you allocated

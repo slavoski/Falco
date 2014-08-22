@@ -37,15 +37,15 @@ void GameOver( void );
 
 
 //Used as the main window for OpenGL and starting point of the exe
-int main(int nArgc, char* cArgv[] )
+int main(int argc, char *argv[])
 {
 
 	//TODO: Use this only when debugging
-	DebugMain(nArgc, cArgv );
+	DebugMain(argc, argv );
 
 	// Ignore params: Don't allow user affect program through command prompt
-	(void)nArgc;
-	(void)cArgv;
+	(void)argc;
+	(void)argv;
 	
 	//Startup the game and make sure you were succesfull
 	CGame* pGame = CGame::GetInstance();
@@ -62,6 +62,7 @@ int main(int nArgc, char* cArgv[] )
 
 	while(pGame->IsRunning())
 	{
+		pGame->Input();
 		pGame->Update();
 		pGame->Render();
 	}

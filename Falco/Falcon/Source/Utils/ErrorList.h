@@ -1,0 +1,1 @@
+#define FULLSCREEN_ERROR -500

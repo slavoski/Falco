@@ -2,7 +2,6 @@
 #include "Renderer.h"
 
 
-
 const GLchar* VertexShader = 
 	{
 		"#version 400\n"\
@@ -34,7 +33,6 @@ const GLchar* FragmentShader =
 
 //For learning purposes
 //TODO REMOVE
-char m_sszWindowTitle[50];
 unsigned int uiFrameCount = 0;
 GLuint VertexShaderId,
 	   FragmentShaderId,
@@ -43,29 +41,28 @@ GLuint VertexShaderId,
 	   VboId,
 	   ColorBufferId;
 
-void Cleanup(void);
-void TimerFunction(int _nValue);
+
 void DestroyShaders(void);
 void CreateShaders(void);
-void ResizeFunction(int _nWindowWidth, int _nWindowHeight);
 void CreateVBO(void);
 void DestroyVBO(void);
-void IdleFunction( void );
-void RenderFunction(void);
 
 
 
 Renderer::Renderer(void)
 {
-	m_nWindowHandle		= 0;
+	m_nSDLWindow		= NULL;
 	m_nWindowWidth		= 0;
 	m_nWindowHeight		= 0;
 	m_bFullscreen		= false;
+	m_szWindowTitle[0]  = '\0';
 }
 
 
 Renderer::~Renderer(void)
 {
+	DestroyShaders();
+	DestroyVBO();
 }
 
 bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char* _szWindowTitle, int _posX, int _posY)
@@ -77,32 +74,38 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	//TODO: Check Config File to see if it is
 	m_bFullscreen   = false;
 	
-	memcpy(m_sszWindowTitle, _szWindowTitle, sizeof(_szWindowTitle) + 1);
+	memcpy(m_szWindowTitle, _szWindowTitle, sizeof(_szWindowTitle) + 1);
 
 	//Initialize GLUT and set its parameters
 	glutInit(&_nArgumentCount, _szArgumentVector);
 
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION	);
 
-	glutInitWindowSize(m_nWindowWidth, m_nWindowHeight);
-	glutInitWindowPosition(_posX, _posY);
+	//glutInitWindowSize(m_nWindowWidth, m_nWindowHeight);
+	//glutInitWindowPosition(_posX, _posY);
 
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL);
 
-	m_nWindowHandle = glutCreateWindow(_szWindowTitle);
-
-	if(m_nWindowHandle < 1) 
+	//m_nWindowHandle = glutCreateWindow(_szWindowTitle);
+	
+	m_nSDLWindow = SDL_CreateWindow(_szWindowTitle, _posX, _posY,	m_nWindowWidth,	m_nWindowHeight, SDL_WINDOW_OPENGL);
+	
+	//Check if window was created
+	if(m_nSDLWindow == NULL) 
 	{
-		fprintf(stderr,	"ERROR: Could not create a new rendering window.\n"	);
+		fprintf(stderr,	"ERROR: Could not create a new rendering window. \n");
 		exit(EXIT_FAILURE);
 	}
 
-	GLenum GlewInitResult;
-	GlewInitResult = glewInit();
+	//Now create the context for OpenGl
+	SDL_GL_CreateContext(m_nSDLWindow);
+	
+	GLenum eInitResult;
+	eInitResult = glewInit();
 
-	if (GLEW_OK != GlewInitResult) 
+	if (GLEW_OK != eInitResult) 
 	{
-		fprintf(stderr,"ERROR: %s\n", glewGetErrorString(GlewInitResult));
+		fprintf(stderr,"ERROR: %s\n", glewGetErrorString(eInitResult));
 		exit(EXIT_FAILURE);
 	}
 
@@ -117,94 +120,114 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	glDepthFunc(GL_LESS);
 	
 
-	glutReshapeFunc(ResizeFunction);
-	glutDisplayFunc(RenderFunction);
-	glutIdleFunc(IdleFunction);
-	glutTimerFunc(0, TimerFunction, 0);
-	glutCloseFunc(Cleanup);
-
-
 	CreateShaders();
 	CreateVBO();
-
+	
 	glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
+	
+	SDL_GetDesktopDisplayMode(0, &m_DisplayInfo);
+
+	
 
 	return true;
 }
 
-
-bool Renderer::ResizeWindow(int _nWindowWidth, int _nWindowHeight, bool _bFullScreen)
+void Renderer::Shutdown( void )
 {
-	
-	if(_bFullScreen != m_bFullscreen)
-		glutFullScreenToggle();
-	
+		SDL_DestroyWindow(m_nSDLWindow);
+}
+
+void Renderer::ResizeWindow(int _nWindowWidth, int _nWindowHeight)
+{
 	m_nWindowWidth  = _nWindowWidth;
 	m_nWindowHeight = _nWindowHeight;
-	m_bFullscreen   = _bFullScreen;
+	
 
+	//Cap to the windows max width and height
+	if(m_DisplayInfo.w < _nWindowWidth)
+		m_nWindowWidth  = m_DisplayInfo.w;
 
-	glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
+	if(m_DisplayInfo.h < _nWindowHeight)
+		m_nWindowHeight = m_DisplayInfo.h;
 
-	return true;
+	
+	SDL_SetWindowSize(m_nSDLWindow, m_nWindowWidth, m_nWindowHeight);
+
 }
+
+int Renderer::Fullscreen(bool _bFullscreen)
+{
+	m_bFullscreen = _bFullscreen;
+	
+	if(m_bFullscreen)
+	{
+		SDL_SetWindowSize(m_nSDLWindow, m_DisplayInfo.w, m_DisplayInfo.h);
+		//Check For errors
+		
+		if(!SDL_SetWindowFullscreen(m_nSDLWindow, SDL_WINDOW_FULLSCREEN))
+		{
+			DEBUG_OUTPUT("Error switching to fullscreen");
+			DEBUG_OUTPUT(SDL_GetError());
+			return FULLSCREEN_ERROR;
+		}
+	}
+	else
+	{
+		ResizeWindow(m_nWindowWidth, m_nWindowHeight);
+		if(SDL_SetWindowFullscreen(m_nSDLWindow, 0))
+		{
+			DEBUG_OUTPUT("Error switching from fullscreen");
+			DEBUG_OUTPUT(SDL_GetError());
+			return FULLSCREEN_ERROR;
+		}
+	}
+
+	return 0;
+}
+
+void Renderer::BeginScene( void )
+{
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+}
+
 
 void Renderer::Update( void )
 {
-	glutMainLoop();
+	//Is this needed any more?
+	//glutMainLoopEvent();
 }
 
-
-void ResizeFunction(int _nWindowWidth, int _nWindowHeight)
+void Renderer::Render( void )
 {
 
-	glViewport(0, 0, _nWindowWidth, _nWindowHeight);
 }
 
-
-void RenderFunction(void)
+void Renderer::EndScene( void )
 {
-	++uiFrameCount;
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glDrawArrays(GL_TRIANGLES, 0 , 3);
-	glutSwapBuffers();
-	glutPostRedisplay();
-}
-
-void IdleFunction( void )
-{
-	glutPostRedisplay();
-}
-
-void TimerFunction(int _nValue)
-{
-	if (0 != _nValue) 
-	{
-		std::stringstream test;
-		test << m_sszWindowTitle << ": " << uiFrameCount * 4 << " Frames Per Second @ " << WINDOW_WIDTH << " x " << WINDOW_HEIGHT;
-		
-		try
-		{
-			glutSetWindowTitle(test.str().c_str());
-		}
-		catch(int e )
-		{
-			cout << "An exception occurred. Exception Nr. " << e << '\n';
-		}
-
-	}
-	uiFrameCount = 0;
-	glutTimerFunc(250, TimerFunction, 1);
+	SDL_GL_SwapWindow( m_nSDLWindow );
 }
 
 
-void Cleanup(void)
-{
-	DestroyShaders();
-	DestroyVBO();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void CreateVBO(void)
 {
@@ -243,7 +266,7 @@ void CreateVBO(void)
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
 		fprintf(stderr, "ERROR: Could not create a VBO: %s \n", gluErrorString(ErrorCheckValue));
-		exit(-1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -265,7 +288,7 @@ void DestroyVBO(void)
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
 		fprintf(stderr,	"ERROR: Could not destroy the VBO: %s \n", gluErrorString(ErrorCheckValue));
-	 	exit(-1);
+	 	exit(EXIT_FAILURE);
 	}
 }
 
@@ -295,7 +318,7 @@ void CreateShaders(void)
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
 		fprintf(stderr,	"ERROR: Could not create the shaders: %s \n", gluErrorString(ErrorCheckValue));
-	 	exit(-1);
+	 	exit(EXIT_FAILURE);
 	}
 }
 
@@ -317,6 +340,6 @@ void DestroyShaders(void)
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
 		fprintf(stderr,	"ERROR: Could not destroy the shaders: %s \n", gluErrorString(ErrorCheckValue) );	 
-		exit(-1);
+		exit(EXIT_FAILURE);
 	}
 }

@@ -44,6 +44,12 @@
     <Filter Include="Configs">
       <UniqueIdentifier>{7eb6954b-20ce-421a-9fa3-fa471fbee427}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{a47b352b-2faf-4924-ae1f-06d3ef87478e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\Header">
+      <UniqueIdentifier>{ad22d62a-01b2-4d76-aa15-d15a73e7f893}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -97,6 +103,12 @@
       <Filter>Math\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Configs\RenderConfig.h">
+      <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utils\Util.h">
+      <Filter>Util\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utils\ErrorList.h">
       <Filter>Configs</Filter>
     </ClInclude>
   </ItemGroup>

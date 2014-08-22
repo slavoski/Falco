@@ -39,6 +39,8 @@
     <ClInclude Include="Source\State System\GameStates\IGameState.h" />
     <ClInclude Include="Source\State System\Main\Game.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Source\Utils\ErrorList.h" />
+    <ClInclude Include="Source\Utils\Util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DADD81CC-2FCF-4ED4-8F36-EED6F52F317F}</ProjectGuid>
@@ -90,7 +92,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)ThirdParty\Include\GL;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ThirdParty\Include\GL;$(SolutionDir)ThirdParty\Include\SDL2-2.0.3;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)ThirdParty\$(PlatformTarget)\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,11 +117,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)ThirdParty\$(PlatformTarget)\lib\*.dll $(OutputPath) /Y</Command>
