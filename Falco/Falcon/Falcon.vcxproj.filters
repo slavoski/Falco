@@ -47,7 +47,10 @@
     <Filter Include="Util">
       <UniqueIdentifier>{a47b352b-2faf-4924-ae1f-06d3ef87478e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Util\Header">
+    <Filter Include="Util\Source Files">
+      <UniqueIdentifier>{27fac2d7-ffec-4082-8950-7f9bdf9cdd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\Header Files">
       <UniqueIdentifier>{ad22d62a-01b2-4d76-aa15-d15a73e7f893}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -75,6 +78,12 @@
     </ClCompile>
     <ClCompile Include="Source\Math\Vector4.cpp">
       <Filter>Math\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utils\Timer.cpp">
+      <Filter>Util\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utils\Mutex.cpp">
+      <Filter>Util\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,10 +115,16 @@
       <Filter>Configs</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utils\Util.h">
-      <Filter>Util\Header</Filter>
+      <Filter>Util\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utils\ErrorList.h">
       <Filter>Configs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utils\Timer.h">
+      <Filter>Util\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utils\Mutex.h">
+      <Filter>Util\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -28,6 +28,8 @@
     <ClCompile Include="Source\State System\Main\Game.cpp" />
     <ClCompile Include="Source\stdafx.cpp">
     </ClCompile>
+    <ClCompile Include="Source\Utils\Mutex.cpp" />
+    <ClCompile Include="Source\Utils\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Configs\RenderConfig.h" />
@@ -40,6 +42,8 @@
     <ClInclude Include="Source\State System\Main\Game.h" />
     <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\Utils\ErrorList.h" />
+    <ClInclude Include="Source\Utils\Mutex.h" />
+    <ClInclude Include="Source\Utils\Timer.h" />
     <ClInclude Include="Source\Utils\Util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

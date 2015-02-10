@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "../../Math/Vector3.h"
 
-
+#include "../../Utils/Timer.h"
 
 CGame* CGame::s_Instance = NULL;
 
@@ -39,6 +39,12 @@ void CGame::DeleteInstance(void)
 	s_Instance = NULL;
 }
 	
+void test()
+{
+
+	cout << "success" <<endl;
+}
+
 //Singleton Setup
 bool CGame::Startup(void)
 {
@@ -78,6 +84,10 @@ bool CGame::Startup(void)
 
 	cout << a;
 
+	double time = 60000;
+
+	Timer t(time, &test);
+
 	return true;
 }
 
@@ -113,6 +123,9 @@ void CGame::Update()
 
 	//Setup Timer
 	float fElapsed = 0.0;
+
+
+
 
 	//Make sure the elapsed doesn't update too much
 	if(fElapsed > 1.0f)
