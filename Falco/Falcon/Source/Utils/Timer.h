@@ -8,22 +8,21 @@ public:
 	void (*function)();
 };
 
-class Timer
+class CTimer
 {
 public:
-	~Timer(void);
-	Timer(double _milliseconds, void (*_callback)());
+	~CTimer(void);
+	//Initialize the timer to send a callback after elapsed time has passed
+	CTimer(double _milliseconds, void (*_callback)());
 
+	//Initialize the timer
+	CTimer();
 
 	//Increments the timer, 
 	//cannot run if countdown is running.
 	void StartTime();
 
-	//Decrements the timer, until zero
-	//Cannot run if timer is running
-	void StartCountdown();
-
-	//Stops the increment or decrement of time.
+	//Stops the increment of time.
 	//returns current time in milliseconds
 	double StopTime();
 	
@@ -38,25 +37,39 @@ public:
 
 	//Set the time until function is called
 	//i.e 3..2..1..call function
-	void SetCountdownCallback(double _milliseconds, void* _callback);
+	void SetCountdownCallback(double _milliseconds, void (*_callback)());
 
-	//Resets the timer to the initial time or passed in time
+	//Resets the timer to the 0
 	void Reset();
-
-	//Resets the initial time to the passed in value, and resets the timer if true
-	void ResetInitialTime(double _milliseconds, bool _resetTimer = false);
 
 	//Returns the Frames Per Second
 	int GetFPS();
 
+	//Returns the change in time
+	double GetDeltaTime();
+
+	//Update the time
+	void Update();
+
 private:
 
+	void Initialize();
+
 	 LARGE_INTEGER m_liFrequency;
-	 LARGE_INTEGER m_currFrequency;
-	 LARGE_INTEGER m_elapsedTime;
+	 LARGE_INTEGER m_currTick;
 	 
 	 bool m_bUpdate;
-};
 
+	 double m_dCurrentTime;
+	 double m_dStartTime;
+	 double m_dLastTime;
+	 double m_dDeltaTime;
+	 double m_dPreviousFrameTime;
+
+	 int m_nFrames;
+	 int m_nFramesPerSecond;
+
+};
+	
 
 #endif

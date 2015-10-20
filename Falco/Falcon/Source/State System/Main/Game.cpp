@@ -2,7 +2,6 @@
 #include "Game.h"
 #include "../../Math/Vector3.h"
 
-#include "../../Utils/Timer.h"
 
 CGame* CGame::s_Instance = NULL;
 
@@ -39,12 +38,6 @@ void CGame::DeleteInstance(void)
 	s_Instance = NULL;
 }
 	
-void test()
-{
-
-	cout << "success" <<endl;
-}
-
 //Singleton Setup
 bool CGame::Startup(void)
 {
@@ -60,33 +53,16 @@ bool CGame::Startup(void)
 	m_pRenderer = new Renderer();
 	m_pRenderer->Initialize(0, NULL, WINDOW_TITLE, 50, 50);
 
+	m_Time.Reset();
+
+
+
 	//Get a handle to the window
 	//m_hwnd
 
 
-	Vector3 a(1,1,1);
-	Vector3 b(3,5,7);
-	Vector3 c(1,2,3);
-	Vector3 d(2,1,3);
 
-	
 
-	cout << a + b;
-	cout << a - b;
-	cout << a * b;
-	cout << a / b;
-
-	a.Negate();
-
-	cout << a;
-
-	a.Normalize();
-
-	cout << a;
-
-	double time = 60000;
-
-	Timer t(time, &test);
 
 	return true;
 }
@@ -114,6 +90,8 @@ bool CGame::Input()
 
 void CGame::Update()
 {
+	m_Time.Update();
+
 	//Find where the mouse is on the screen
 	GetCursorPos(&m_tPoint);
 	ScreenToClient(m_hwnd, &m_tPoint);
@@ -124,8 +102,7 @@ void CGame::Update()
 	//Setup Timer
 	float fElapsed = 0.0;
 
-
-
+	fElapsed = (float)m_Time.GetDeltaTime();
 
 	//Make sure the elapsed doesn't update too much
 	if(fElapsed > 1.0f)
@@ -136,6 +113,7 @@ void CGame::Update()
 	//Send the current time to the correct state
 	if (m_pCurrState)
 	{
+		//TODO modify time, maybe create a new class that handles a timer that is just for the game?
 		m_pCurrState->Update(fElapsed);
 	}
 	
@@ -162,7 +140,7 @@ void CGame::Render()
 	m_pRenderer->BeginScene();
 
 
-	
+	m_pRenderer->Render();
 
 
 	m_pRenderer->EndScene();

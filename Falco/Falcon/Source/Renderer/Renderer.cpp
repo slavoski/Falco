@@ -1,6 +1,30 @@
 #include "../stdafx.h"
 #include "Renderer.h"
 
+
+// An array of 3 vectors which represents 3 vertices
+static const GLfloat g_vertex_buffer_data[] = {
+   -1.0f, -1.0f, 0.0f,
+   1.0f, -1.0f, 0.0f,
+   0.0f,  1.0f, 0.0f,
+};
+
+GLuint vertexBuffer;
+
+void initVertex()
+{
+	GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
+}
+
+void createBuffer()
+{
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+}
+
 Renderer::Renderer(void)
 {
 	m_nSDLWindow		= NULL;
@@ -9,7 +33,6 @@ Renderer::Renderer(void)
 	m_bFullscreen		= false;
 	m_szWindowTitle[0]  = '\0';
 }
-
 
 Renderer::~Renderer(void)
 {
@@ -71,11 +94,13 @@ bool Renderer::Initialize( int _nArgumentCount, char* _szArgumentVector[], char*
 	glDepthFunc(GL_LESS);
 	
 
-	glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
 	SDL_GetDesktopDisplayMode(0, &m_DisplayInfo);
 
-	
+	initVertex();
+
+	createBuffer();
 
 	return true;
 }
@@ -141,12 +166,28 @@ void Renderer::BeginScene( void )
 
 void Renderer::Update( void )
 {
+
 	//Is this needed any more?
 	//glutMainLoopEvent();
 }
 
 void Renderer::Render( void )
 {
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glVertexAttribPointer(
+		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+		);
+
+	// Draw the triangle !
+	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+
+	glDisableVertexAttribArray(0);
 
 }
 

@@ -5,6 +5,7 @@
 #include "../GameStates/IGameState.h"
 #include "../../Renderer/Renderer.h"
 
+#include "../../Utils/Timer.h"
 
 class CGame
 {
@@ -50,6 +51,10 @@ private:
 	~CGame( void );
 	CGame( const CGame& );		
 	CGame&	operator=( const CGame& );
+
+	//Keep track of our delta time;
+	CTimer m_Time;
+
 };
 
 #endif

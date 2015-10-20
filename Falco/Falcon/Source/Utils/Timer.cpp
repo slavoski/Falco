@@ -6,48 +6,63 @@
 DWORD WINAPI UpdateCountdown(LPVOID _lpParamter)
 {
 	ThreadInfo* Info = (ThreadInfo*)_lpParamter;
-	LARGE_INTEGER startTime;
+	LARGE_INTEGER pcFreq, currentTick;
 
-	if(!QueryPerformanceCounter(&startTime))
+	if(!QueryPerformanceFrequency(&pcFreq))
 	{	
 		//Todo: Insert Error Code
 	}
 
-	double pcFreq = startTime.QuadPart / 1000.0;
-	__int64 startCount = startTime.QuadPart;
+	if(!QueryPerformanceCounter(&currentTick))
+	{	
+		//Todo: Insert Error Code
+	}
 
-	cout << Info->time << endl;
+	double startTime = double(currentTick.QuadPart) / double(pcFreq.QuadPart);
+	
+	//convert to milliseconds
+	double countdown = Info->time / 1000.0;
+	double lastTime = 0;
 
-	double countdown = Info->time;
-
+	//loop forever
+	// or until the time is 0 or below 0
 	while(true)
 	{
-		QueryPerformanceCounter(&startTime);
+		QueryPerformanceCounter(&currentTick);
+		
+		double currTime =  (double(currentTick.QuadPart) / double(pcFreq.QuadPart)) - startTime;
 
-		countdown -= (startTime.QuadPart - startCount) /pcFreq;
+		countdown -= (currTime - lastTime);
+		
+		lastTime = currTime;
 
-		startCount = startTime.QuadPart;
-
+		//Are we ready to break?
 		if(countdown <= 0.0)
 			break;
 	}
 
+	//Call the function
 	Info->function();
 
+	//Delete the memory we allocated
 	delete Info;
 
 	return 0;
 }
 
 
-Timer::~Timer(void)
+CTimer::~CTimer(void)
 {
 
 }
 
 
-Timer::Timer(double _milliseconds,  void (*_callback)())
+CTimer::CTimer(double _milliseconds,  void (*_callback)())
 {
+
+	this->Initialize();
+
+	//Create a new Thread object to safe the info.
 	ThreadInfo* tempInfo = new ThreadInfo();
 	tempInfo->time = _milliseconds;
 	tempInfo->function = _callback;
@@ -56,68 +71,130 @@ Timer::Timer(double _milliseconds,  void (*_callback)())
 
 }
 
+CTimer::CTimer()
+{
+	this->Initialize();
+}
+
 
 //Increments the timer, 
-//cannot run if stopwatch is running.
-void Timer::StartTime()
+//cannot run if countdown is running.
+void CTimer::StartTime()
 {
-
+	m_bUpdate = true;
+	m_dLastTime = double(m_currTick.QuadPart) / double(m_liFrequency.QuadPart) - m_dStartTime;
 }
 
-//Decrements the timer, until zero
-//Cannot run if timer is running
-void Timer::StartCountdown()
-{
-
-}
-
-//Stops the increment or decrement of time.
+//Stops the increment of time.
 //returns current time in milliseconds
-double Timer::StopTime()
+double CTimer::StopTime()
 {
-	return 0;
+	m_bUpdate = false;
+	return m_dCurrentTime;
 }
 
 //Get the current Seconds
-double Timer::GetSeconds()
+double CTimer::GetSeconds()
 {
-	return 0;
+	Update();
+	return m_dCurrentTime;
 }
 
 //Get the current Minutes
-double Timer::GetMinutes()
+double CTimer::GetMinutes()
 {
-	return 0;
+	Update();
+	return  m_dCurrentTime / 60;
 }
 
 //Get the current Milliseconds
-double Timer::GetMilliSeconds()
+double CTimer::GetMilliSeconds()
 {
-	return 0;
+	Update();
+	return m_dCurrentTime * 1000.0;
 }
 
 //Set the time until function is called
 //i.e 3..2..1..call function
-void Timer::SetCountdownCallback(double _milliseconds, void* _callback)
+void CTimer::SetCountdownCallback(double _milliseconds, void (*_callback)())
 {
-
+	//Create a new Thread object to safe the info.
+	ThreadInfo* tempInfo = new ThreadInfo();
+	tempInfo->time = _milliseconds;
+	tempInfo->function = _callback;
+	
+	CreateThread(0, 0, &UpdateCountdown, (LPVOID)tempInfo, 0, 0);
 }
 
 //Resets the timer to 0
-void Timer::Reset()
+void CTimer::Reset()
 {
-
+	QueryPerformanceCounter(&m_currTick);
+	m_dStartTime = double(m_currTick.QuadPart) / double(m_liFrequency.QuadPart);
+	m_dCurrentTime = m_dLastTime =  m_dPreviousFrameTime = 0.0;
+	m_nFrames = m_nFramesPerSecond = 0;
 }
 
-//Resets the initial time to the passed in value, and resets the timer if true
-void Timer::ResetInitialTime(double _milliseconds, bool _resetTimer)
-{
-	
-}
 
 //Returns the Frames Per Second
-int Timer::GetFPS()
+int CTimer::GetFPS()
 {
-	return 0;
+	return m_nFramesPerSecond;
 }
 
+void CTimer::Initialize()
+{
+	if(!QueryPerformanceFrequency(&m_liFrequency))
+	{	
+		//Todo: Insert Error Code
+	}
+
+	if(!QueryPerformanceCounter(&m_currTick))
+	{	
+		//Todo: Insert Error Code
+	}
+
+	m_dStartTime = double(m_currTick.QuadPart) / double(m_liFrequency.QuadPart);
+
+	m_bUpdate = false;
+	m_dCurrentTime = 0;
+	m_dLastTime = 0;
+	m_nFrames = 0;
+	m_nFramesPerSecond = 0;
+	m_dPreviousFrameTime = 0;
+}
+
+void CTimer::Update()
+{
+	QueryPerformanceCounter(&m_currTick);
+
+	double dNewTime = (double(m_currTick.QuadPart) / double(m_liFrequency.QuadPart)) - m_dStartTime;
+	m_dDeltaTime = (dNewTime - m_dLastTime);
+
+	//Don't update time unless they have started the timer.
+	if(m_bUpdate)
+	{
+		m_dCurrentTime += m_dDeltaTime;
+	}
+
+	++m_nFrames;
+	
+	//How many frames have elapsed in one second
+	if(dNewTime - m_dPreviousFrameTime > 1.0f)
+	{
+		m_nFramesPerSecond = m_nFrames / (int)(dNewTime - m_dPreviousFrameTime);
+		m_nFrames = 0;
+		m_dPreviousFrameTime = dNewTime;
+	}
+	
+	m_dLastTime = dNewTime;
+
+}
+
+
+
+//Returns the change in time
+double CTimer::GetDeltaTime()
+{
+	return m_dDeltaTime;
+}
